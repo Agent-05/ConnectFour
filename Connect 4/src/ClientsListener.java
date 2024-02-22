@@ -25,10 +25,10 @@ public class ClientsListener implements Runnable
                 CommandFromServer cfs = (CommandFromServer)is.readObject();
 
                 // processes the received command
-                if(cfs.getCommand() == CommandFromServer.X_TURN)
-                    frame.setTurn('X');
-                else if(cfs.getCommand() == CommandFromServer.O_TURN)
-                    frame.setTurn('O');
+                if(cfs.getCommand() == CommandFromServer.R_TURN)
+                    frame.setTurn('R');
+                else if(cfs.getCommand() == CommandFromServer.B_TURN)
+                    frame.setTurn('B');
                 else if(cfs.getCommand() == cfs.MOVE)
                 {
                     String data = cfs.getData();
@@ -44,13 +44,13 @@ public class ClientsListener implements Runnable
                 {
                     frame.setText("Tie game.");
                 }
-                else if(cfs.getCommand() == CommandFromServer.X_WINS)
+                else if(cfs.getCommand() == CommandFromServer.R_WINS)
                 {
-                    frame.setText("X wins!");
+                    frame.setText("Red wins!");
                 }
-                else if(cfs.getCommand() == CommandFromServer.O_WINS)
+                else if(cfs.getCommand() == CommandFromServer.B_WINS)
                 {
-                    frame.setText("O wins!");
+                    frame.setText("Black wins!");
                 }
             }
         }

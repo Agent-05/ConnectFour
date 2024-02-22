@@ -8,13 +8,13 @@ public class CommandFromServer implements Serializable
     private String data ="";
 
     // Command list
-    public static final int CONNECTED_AS_X=0;
-    public static final int CONNECTED_AS_O=1;
-    public static final int X_TURN=2;
-    public static final int O_TURN=3;
+    public static final int CONNECTED_AS_R=0;
+    public static final int CONNECTED_AS_B=1;
+    public static final int R_TURN=2;
+    public static final int B_TURN=3;
     public static final int MOVE=4;
-    public static final int X_WINS=5;
-    public static final int O_WINS=6;
+    public static final int R_WINS=5;
+    public static final int B_WINS=6;
     public static final int TIE=7;
 
     public CommandFromServer(int command, String data) {

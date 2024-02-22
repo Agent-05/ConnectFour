@@ -29,10 +29,10 @@ public class TTTFrame extends JFrame implements KeyListener {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // Set initial frame message
-        if(player == 'X')
-            text = "Waiting for O to Connect";
+        if(player == 'R')
+            text = "Waiting for Black to Connect";
 
-        setSize(400,460);
+        setSize(650,560);
         setResizable(false);
         setAlwaysOnTop(true);
         setVisible(true);
@@ -40,21 +40,26 @@ public class TTTFrame extends JFrame implements KeyListener {
 
     public void paint(Graphics g)
     {
+        //7 by 6 grid (6 down 7 across) yellow background with white circles evenly spaced out
         // draws the background
-        g.setColor(Color.BLACK);
+        g.setColor(Color.BLUE);
         g.fillRect(0,0,getWidth(),getHeight());
 
         // draws the display text to the screen
-        g.setColor(Color.RED);
+        g.setColor(Color.GRAY);
         g.setFont(new Font("Times New Roman",Font.BOLD,30));
         g.drawString(text,20,55);
 
         // draws the tic-tac-toe grid lines to the screen
-        g.setColor(Color.RED);
-        for(int y =0;y<=1; y++)
-            g.drawLine(0,(y+1)*133+60,getWidth(),(y+1)*133+60);
-        for(int x =0;x<=1; x++)
-            g.drawLine((x+1)*133,60,(x+1)*133,getHeight());
+        int spacing = 75;
+        g.setColor(Color.WHITE);
+        for(int y = 1;y<=6; y++)
+        {
+            for (int x = 1; x <= 7; x++)
+            {
+                g.fillOval(spacing * x + 5, spacing * y + 5, 65, 65);
+            }
+        }
 
         // draws the player moves to the screen
         g.setFont(new Font("Times New Roman",Font.BOLD,70));
@@ -74,7 +79,10 @@ public class TTTFrame extends JFrame implements KeyListener {
             text = "Your turn";
         else
         {
-            text = turn+"'s turn.";
+            if(turn == 'R')
+                text = "Red's turn.";
+            if(turn == 'B')
+                text = "Black's turn.";
         }
         repaint();
     }
@@ -94,6 +102,7 @@ public class TTTFrame extends JFrame implements KeyListener {
         // sets the row and column, based on the entered key
         switch(key)
         {
+            //seven for 7 columns, the rest is handled by the computer to see how far it can drop down
             case '1':
                 r=0;
                 c=0;
@@ -121,14 +130,6 @@ public class TTTFrame extends JFrame implements KeyListener {
             case '7':
                 r=2;
                 c=0;
-                break;
-            case '8':
-                r=2;
-                c=1;
-                break;
-            case '9':
-                r=2;
-                c=2;
                 break;
             default:
                 r=c=-1;

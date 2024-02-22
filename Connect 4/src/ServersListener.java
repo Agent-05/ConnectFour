@@ -11,7 +11,7 @@ public class ServersListener implements Runnable
     private char player;
 
     // static data that is shared between both listeners
-    private static char turn = 'X';
+    private static char turn = 'R';
     private static GameData gameData = new GameData();
     private static ArrayList<ObjectOutputStream> outs = new ArrayList<>();
 
@@ -33,8 +33,8 @@ public class ServersListener implements Runnable
 
                 // handle the received command
                 if(cfc.getCommand()==CommandFromClient.MOVE &&
-                    turn==player && !gameData.isWinner('X')
-                        && !gameData.isWinner('O')
+                    turn==player && !gameData.isWinner('R')
+                        && !gameData.isWinner('B')
                         && !gameData.isCat())
                 {
                     // pulls data for the move from the data field
@@ -67,16 +67,16 @@ public class ServersListener implements Runnable
     public void changeTurn()
     {
         // changes the turn
-        if(turn=='X')
-            turn = 'O';
+        if(turn=='R')
+            turn = 'B';
         else
-            turn ='X';
+            turn ='R';
 
         // informs both client of the new player turn
-        if (turn == 'X')
-            sendCommand(new CommandFromServer(CommandFromServer.X_TURN, null));
+        if (turn == 'R')
+            sendCommand(new CommandFromServer(CommandFromServer.R_TURN, null));
         else
-            sendCommand(new CommandFromServer(CommandFromServer.O_TURN, null));
+            sendCommand(new CommandFromServer(CommandFromServer.B_TURN, null));
     }
 
     public void checkGameOver()
@@ -84,10 +84,10 @@ public class ServersListener implements Runnable
         int command = -1;
         if(gameData.isCat())
             command = CommandFromServer.TIE;
-        else if(gameData.isWinner('X'))
-            command = CommandFromServer.X_WINS;
-        else if(gameData.isWinner('O'))
-            command = CommandFromServer.O_WINS;
+        else if(gameData.isWinner('R'))
+            command = CommandFromServer.R_WINS;
+        else if(gameData.isWinner('B'))
+            command = CommandFromServer.B_WINS;
 
         // if the game ended, informs both clients of the game's end state
         if(command!=-1)

@@ -9,8 +9,7 @@ public class ServerMain
     {
         try
         {
-            // creates a socket that allows connections on port 8001
-            ServerSocket serverSocket = new ServerSocket(8001);
+            ServerSocket serverSocket = new ServerSocket(8025);
 
             // allow X to connect and build streams to / from X
             Socket xCon = serverSocket.accept();
@@ -18,11 +17,11 @@ public class ServerMain
             ObjectInputStream xis = new ObjectInputStream(xCon.getInputStream());
 
             // Lets the client know they are the X player
-            xos.writeObject(new CommandFromServer(CommandFromServer.CONNECTED_AS_X,null));
-            System.out.println("X has Connected.");
+            xos.writeObject(new CommandFromServer(CommandFromServer.CONNECTED_AS_R,null));
+            System.out.println("Red has Connected.");
 
             // Creates a Thread to listen to the X client
-            ServersListener sl = new ServersListener(xis,xos,'X');
+            ServersListener sl = new ServersListener(xis,xos,'R');
             Thread t = new Thread(sl);
             t.start();
 
@@ -32,17 +31,17 @@ public class ServerMain
             ObjectInputStream ois = new ObjectInputStream(oCon.getInputStream());
 
             // Lets the client know they are the X player
-            oos.writeObject(new CommandFromServer(CommandFromServer.CONNECTED_AS_O,null));
-            System.out.println("O has Connected.");
+            oos.writeObject(new CommandFromServer(CommandFromServer.CONNECTED_AS_B,null));
+            System.out.println("Black has Connected.");
 
             // Creates a Thread to listen to the X client
-            sl = new ServersListener(ois,oos,'O');
+            sl = new ServersListener(ois,oos,'B');
             t = new Thread(sl);
             t.start();
 
 
-            xos.writeObject(new CommandFromServer(CommandFromServer.X_TURN,null));
-            oos.writeObject(new CommandFromServer(CommandFromServer.X_TURN,null));
+            xos.writeObject(new CommandFromServer(CommandFromServer.R_TURN,null));
+            oos.writeObject(new CommandFromServer(CommandFromServer.R_TURN,null));
         }
         catch (Exception e)
         {

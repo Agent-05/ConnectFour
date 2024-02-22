@@ -1,6 +1,11 @@
 public class GameData
 {
-    private char[][] grid = {{' ',' ', ' '},{' ',' ', ' '},{' ',' ', ' '}};
+    private char[][] grid = {{' ',' ',' ',' ',' ',' ',' '},
+                             {' ',' ',' ',' ',' ',' ',' '},
+                             {' ',' ',' ',' ',' ',' ',' '},
+                             {' ',' ',' ',' ',' ',' ',' '},
+                             {' ',' ',' ',' ',' ',' ',' '},
+                             {' ',' ',' ',' ',' ',' ',' '}};
 
     public char[][] getGrid()
     {
@@ -16,13 +21,22 @@ public class GameData
                 grid[r][c]=' ';
     }
 
-   
+   //is cat has been completed for connect four
     public boolean isCat()
     {
-        if(grid[0][0] !=' ' && grid[0][1] !=' ' && grid[0][2] !=' '
-                && grid[1][0] !=' ' && grid[1][1] !=' ' && grid[1][2] !=' '
-                && grid[2][0] !=' ' && grid[2][1] !=' ' && grid[2][2] !=' '
-                && !isWinner('X') && !isWinner('O'))
+        boolean isEmpty = true;
+        for(int r=0;r<grid.length; r++)
+        {
+            for(int c=0; c<grid[0].length; c++)
+            {
+                if(grid[r][c]==' ')
+                {
+                    isEmpty = false;
+                    break;
+                }
+            }
+        }
+        if(!isEmpty && !isWinner('X') && !isWinner('O'))
             return true;
         else
             return false;

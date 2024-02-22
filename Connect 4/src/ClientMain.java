@@ -11,19 +11,19 @@ public class ClientMain
             GameData gameData = new GameData();
 
             // create a connection to server
-            Socket socket = new Socket("127.0.0.1",8001);
+            Socket socket = new Socket("127.0.0.1",8025);
             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
 
-            // determine if playing as X or O
+            // determine if playing as red or black
             CommandFromServer cfs = (CommandFromServer) is.readObject();
             TTTFrame frame;
 
             // Create the Frame based on which player the server says this client is
-            if(cfs.getCommand() == CommandFromServer.CONNECTED_AS_X)
-                frame = new TTTFrame(gameData,os,'X');
+            if(cfs.getCommand() == CommandFromServer.CONNECTED_AS_R)
+                frame = new TTTFrame(gameData,os,'R');//indicates Red
             else
-                frame = new TTTFrame(gameData,os, 'O');
+                frame = new TTTFrame(gameData,os, 'B');//indicates Black
 
             // Starts a thread that listens for commands from the server
             ClientsListener cl = new ClientsListener(is,os,frame);
