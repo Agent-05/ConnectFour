@@ -74,7 +74,7 @@ public class TTTFrame extends JFrame implements KeyListener {
         g.setFont(new Font("Times New Roman",Font.BOLD,70));
         for(int r=0; r<gameData.getGrid().length; r++)
             for(int c=0; c<gameData.getGrid().length; c++)
-                g.drawString("A"+gameData.getGrid()[r][c],c*133+42,r*133+150);
+                g.drawString(""+gameData.getGrid()[r][c],c*133+42,r*133+150);
     }
 
     public void setText(String text) {
