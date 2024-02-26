@@ -16,7 +16,7 @@ public class TTTFrame extends JFrame implements KeyListener {
 
     public TTTFrame(GameData gameData, ObjectOutputStream os, char player)
     {
-        super("TTT Game");
+        super("Connect  4");
         // sets the attributes
         this.gameData = gameData;
         this.os = os;
@@ -32,7 +32,7 @@ public class TTTFrame extends JFrame implements KeyListener {
         if(player == 'R')
             text = "Waiting for Black to Connect";
 
-        setSize(650,560);
+        setSize(600,580);
         setResizable(false);
         setAlwaysOnTop(true);
         setVisible(true);
@@ -41,23 +41,32 @@ public class TTTFrame extends JFrame implements KeyListener {
     public void paint(Graphics g)
     {
         //7 by 6 grid (6 down 7 across) yellow background with white circles evenly spaced out
-        // draws the background
-        g.setColor(Color.BLUE);
+        // draws the backgroundG
+        Graphics2D g2 = (Graphics2D) g;
+        g.setColor(new Color(237, 202, 133));
         g.fillRect(0,0,getWidth(),getHeight());
+        g.setColor(Color.BLACK);
+        g2.setStroke(new BasicStroke(4));
+        g.drawRect(20,80,getWidth()-40,getHeight()-100);
 
         // draws the display text to the screen
         g.setColor(Color.GRAY);
         g.setFont(new Font("Times New Roman",Font.BOLD,30));
         g.drawString(text,20,55);
 
-        // draws the tic-tac-toe grid lines to the screen
+        // draws the circle grid lines to the screen
         int spacing = 75;
         g.setColor(Color.WHITE);
-        for(int y = 1;y<=6; y++)
+
+        for(int y = 0;y < 6; y++)
         {
-            for (int x = 1; x <= 7; x++)
+            for (int x = 0; x < 7; x++)
             {
-                g.fillOval(spacing * x + 5, spacing * y + 5, 65, 65);
+                g.fillOval(spacing * x + 40, spacing * y + 100, 65, 65);
+                g.setColor(Color.BLACK);
+
+                g.drawOval(spacing * x + 40, spacing * y + 100, 65, 65);
+                g.setColor(Color.WHITE);
             }
         }
 
@@ -65,7 +74,7 @@ public class TTTFrame extends JFrame implements KeyListener {
         g.setFont(new Font("Times New Roman",Font.BOLD,70));
         for(int r=0; r<gameData.getGrid().length; r++)
             for(int c=0; c<gameData.getGrid().length; c++)
-                g.drawString(""+gameData.getGrid()[r][c],c*133+42,r*133+150);
+                g.drawString("A"+gameData.getGrid()[r][c],c*133+42,r*133+150);
     }
 
     public void setText(String text) {
