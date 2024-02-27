@@ -2,9 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.ObjectOutputStream;
 
-public class TTTFrame extends JFrame implements KeyListener {
+public class TTTFrame extends JFrame implements MouseListener {
     // Display message
     private String text = "";
     // the letter you are playing as
@@ -23,7 +25,7 @@ public class TTTFrame extends JFrame implements KeyListener {
         this.player = player;
 
         // adds a KeyListener to the Frame
-        addKeyListener(this);
+        addMouseListener(this);
 
         // makes closing the frame close the program
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -101,66 +103,43 @@ public class TTTFrame extends JFrame implements KeyListener {
         gameData.getGrid()[r][c] = letter;
         repaint();
     }
-
     @Override
-    public void keyTyped(KeyEvent event) {
-        char key = event.getKeyChar();
-        int r;
-        int c;
-
-        // sets the row and column, based on the entered key
-        switch(key)
-        {
-            //seven for 7 columns, the rest is handled by the computer to see how far it can drop down
-            case '1':
-                r=0;
-                c=0;
-                break;
-            case '2':
-                r=0;
-                c=1;
-                break;
-            case '3':
-                r=0;
-                c=2;
-                break;
-            case '4':
-                r=1;
-                c=0;
-                break;
-            case '5':
-                r=1;
-                c=1;
-                break;
-            case '6':
-                r=1;
-                c=2;
-                break;
-            case '7':
-                r=2;
-                c=0;
-                break;
-            default:
-                r=c=-1;
-        }
-        // if a valid enter was entered, send the move to the server
-        if(c!=-1) {
-            try {
-                os.writeObject(new CommandFromClient(CommandFromClient.MOVE, "" + c + r + player));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    public void mouseClicked(MouseEvent e) {
 
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void mousePressed(MouseEvent e) {
+        int placement = e.getX();
+        if (placement >= 40 && placement <= 105 ){
+            System.out.println("Col1");
+        } else if (placement >= 115 && placement <= 180 ) {
+            System.out.println("Col2");
+        } else if (placement >= 190 && placement <= 255 ) {
+            System.out.println("Col3");
+        } else if (placement >= 265 && placement <= 330 ) {
+            System.out.println("Col4");
+        } else if (placement >= 340 && placement <= 405 ) {
+            System.out.println("Col5");
+        } else if (placement >= 415 && placement <= 480 ) {
+            System.out.println("Col6");
+        } else if (placement >= 490 && placement <= 555 ) {
+            System.out.println("Col7");
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
 
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
 
     }
 }
