@@ -16,23 +16,23 @@ public class ServerMain
             ObjectOutputStream xos = new ObjectOutputStream(xCon.getOutputStream());
             ObjectInputStream xis = new ObjectInputStream(xCon.getInputStream());
 
-            // Lets the client know they are the X player
+            // Lets the client know they are the Red player
             xos.writeObject(new CommandFromServer(CommandFromServer.CONNECTED_AS_R,null));
             System.out.println("Red has Connected.");
 
-            // Creates a Thread to listen to the X client
+            // Creates a Thread to listen to the Red client
             ServersListener sl = new ServersListener(xis,xos,'R');
             Thread t = new Thread(sl);
             t.start();
 
-            // allow O to connect and build streams to / from O
+            // allow Blue to connect and build streams to / from Blue
             Socket oCon = serverSocket.accept();
             ObjectOutputStream oos = new ObjectOutputStream(oCon.getOutputStream());
             ObjectInputStream ois = new ObjectInputStream(oCon.getInputStream());
 
-            // Lets the client know they are the X player
+            // Lets the client know they are the Blue player
             oos.writeObject(new CommandFromServer(CommandFromServer.CONNECTED_AS_B,null));
-            System.out.println("Black has Connected.");
+            System.out.println("Blue has Connected.");
 
             // Creates a Thread to listen to the X client
             sl = new ServersListener(ois,oos,'B');

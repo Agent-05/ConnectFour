@@ -64,19 +64,21 @@ public class TTTFrame extends JFrame implements MouseListener {
         {
             for (int x = 0; x < 7; x++)
             {
-                g.fillOval(spacing * x + 40, spacing * y + 100, 65, 65);
+                if (gameData.getGrid()[y][x] == 'B'){
+                    g.setColor(new Color(91, 162, 217));
+                    g.fillOval(spacing * x + 40, spacing * y + 100, 65, 65);
+                } else if (gameData.getGrid()[y][x] == 'R') {
+                    g.setColor(new Color(237, 45, 45));
+                    g.fillOval(spacing * x + 40, spacing * y + 100, 65, 65);
+                } else {
+                    g.fillOval(spacing * x + 40, spacing * y + 100, 65, 65);
+                }
                 g.setColor(Color.BLACK);
 
                 g.drawOval(spacing * x + 40, spacing * y + 100, 65, 65);
                 g.setColor(Color.WHITE);
             }
         }
-
-        // draws the player moves to the screen
-        g.setFont(new Font("Times New Roman",Font.BOLD,70));
-        for(int r=0; r<gameData.getGrid().length; r++)
-            for(int c=0; c<gameData.getGrid().length; c++)
-                g.drawString(""+gameData.getGrid()[r][c],c*133+42,r*133+150);
     }
 
     public void setText(String text) {
@@ -111,20 +113,37 @@ public class TTTFrame extends JFrame implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
         int placement = e.getX();
+        int column = -1;
+        int row = -1;
         if (placement >= 40 && placement <= 105 ){
-            System.out.println("Col1");
+            column = 0;
+            row = rower(gameData.getGrid(), column);
         } else if (placement >= 115 && placement <= 180 ) {
-            System.out.println("Col2");
+            column = 1;
+            row = rower(gameData.getGrid(), column);
         } else if (placement >= 190 && placement <= 255 ) {
-            System.out.println("Col3");
+            column = 2;
+            row = rower(gameData.getGrid(), column);
         } else if (placement >= 265 && placement <= 330 ) {
-            System.out.println("Col4");
+            column = 3;
+            row = rower(gameData.getGrid(), column);
         } else if (placement >= 340 && placement <= 405 ) {
-            System.out.println("Col5");
+            column = 4;
+            row = rower(gameData.getGrid(), column);
         } else if (placement >= 415 && placement <= 480 ) {
-            System.out.println("Col6");
+            column = 5;
+            row = rower(gameData.getGrid(), column);
         } else if (placement >= 490 && placement <= 555 ) {
-            System.out.println("Col7");
+            column = 6;
+            row = rower(gameData.getGrid(), column);
+        }
+        if (column != -1 || row != -1){
+            try {
+                os.writeObject(new CommandFromClient(CommandFromClient.MOVE, "" + column + row + player));
+                System.out.println("Work");
+            }catch (Exception a){
+                a.printStackTrace();
+            }
         }
     }
 
@@ -141,5 +160,14 @@ public class TTTFrame extends JFrame implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+    //to find the lowest row that the circle should drop on
+    public static int rower(char[][] arr, int col){
+        for (int i = arr.length-1; i != 0; i--){
+            if (arr[i][col] == ' '){
+                return i;
+            }
+        }
+        return -1;
     }
 }

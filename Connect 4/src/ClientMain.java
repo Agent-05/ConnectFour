@@ -15,7 +15,7 @@ public class ClientMain
             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
 
-            // determine if playing as red or black
+            // determine if playing as red or blue
             CommandFromServer cfs = (CommandFromServer) is.readObject();
             TTTFrame frame;
 
@@ -23,7 +23,7 @@ public class ClientMain
             if(cfs.getCommand() == CommandFromServer.CONNECTED_AS_R)
                 frame = new TTTFrame(gameData,os,'R');//indicates Red
             else
-                frame = new TTTFrame(gameData,os, 'B');//indicates Black
+                frame = new TTTFrame(gameData,os, 'B');//indicates Blue
 
             // Starts a thread that listens for commands from the server
             ClientsListener cl = new ClientsListener(is,os,frame);

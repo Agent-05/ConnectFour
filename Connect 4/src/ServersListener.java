@@ -30,13 +30,14 @@ public class ServersListener implements Runnable
             while(true)
             {
                 CommandFromClient cfc = (CommandFromClient) is.readObject();
-
+                System.out.println(turn + " " + player);
                 // handle the received command
                 if(cfc.getCommand()==CommandFromClient.MOVE &&
                     turn==player && !gameData.isWinner('R')
-                        && !gameData.isWinner('B')
-                        && !gameData.isCat())
+                                        && !gameData.isWinner('B')
+                                        && !gameData.isCat())
                 {
+                    System.out.println("Work2");
                     // pulls data for the move from the data field
                     String data=cfc.getData();
                     int c = data.charAt(0) - '0';

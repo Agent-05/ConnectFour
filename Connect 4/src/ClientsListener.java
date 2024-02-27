@@ -50,7 +50,7 @@ public class ClientsListener implements Runnable
                 }
                 else if(cfs.getCommand() == CommandFromServer.B_WINS)
                 {
-                    frame.setText("Black wins!");
+                    frame.setText("Blue wins!");
                 }
             }
         }
