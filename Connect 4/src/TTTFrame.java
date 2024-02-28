@@ -95,7 +95,7 @@ public class TTTFrame extends JFrame implements MouseListener {
             if(turn == 'R')
                 text = "Red's turn.";
             if(turn == 'B')
-                text = "Black's turn.";
+                text = "Blue's turn.";
         }
         repaint();
     }
@@ -137,7 +137,7 @@ public class TTTFrame extends JFrame implements MouseListener {
             column = 6;
             row = rower(gameData.getGrid(), column);
         }
-        if (column != -1 || row != -1){
+        if (column != -1 && row != -1){
             try {
                 os.writeObject(new CommandFromClient(CommandFromClient.MOVE, "" + column + row + player));
                 System.out.println("Work");
@@ -163,7 +163,7 @@ public class TTTFrame extends JFrame implements MouseListener {
     }
     //to find the lowest row that the circle should drop on
     public static int rower(char[][] arr, int col){
-        for (int i = arr.length-1; i != 0; i--){
+        for (int i = arr.length-1; i >= 0; i--){
             if (arr[i][col] == ' '){
                 return i;
             }

@@ -33,10 +33,7 @@ public class ServersListener implements Runnable
                 System.out.println(turn + " " + player);
                 // handle the received command
                 if(cfc.getCommand()==CommandFromClient.MOVE &&
-                    turn==player && !gameData.isWinner('R')
-                                        && !gameData.isWinner('B')
-                                        && !gameData.isCat())
-                {
+                    turn==player && !gameData.isWinner(gameData.getGrid(), 'B') && !gameData.isWinner(gameData.getGrid(), 'R')) {
                     System.out.println("Work2");
                     // pulls data for the move from the data field
                     String data=cfc.getData();
@@ -85,9 +82,9 @@ public class ServersListener implements Runnable
         int command = -1;
         if(gameData.isCat())
             command = CommandFromServer.TIE;
-        else if(gameData.isWinner('R'))
+        else if(gameData.isWinner(gameData.getGrid(), 'R'))
             command = CommandFromServer.R_WINS;
-        else if(gameData.isWinner('B'))
+        else if(gameData.isWinner(gameData.getGrid(), 'B'))
             command = CommandFromServer.B_WINS;
 
         // if the game ended, informs both clients of the game's end state
