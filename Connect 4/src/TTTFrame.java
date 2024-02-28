@@ -1,9 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.ObjectOutputStream;
 
 public class TTTFrame extends JFrame implements MouseListener {
@@ -38,6 +35,49 @@ public class TTTFrame extends JFrame implements MouseListener {
         setResizable(false);
         setAlwaysOnTop(true);
         setVisible(true);
+
+
+        WindowListener wl = new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    os.writeObject(CommandFromClient.DISCONNECT);
+                }
+                catch (Exception a){
+                    a.printStackTrace();
+                }
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        };
     }
 
     public void paint(Graphics g)

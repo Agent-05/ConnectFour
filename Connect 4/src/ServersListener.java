@@ -53,6 +53,10 @@ public class ServersListener implements Runnable
                     // changes the turn and checks to see if the game is over
                     changeTurn();
                     checkGameOver();
+                }else if(cfc.getCommand()==CommandFromClient.RESTART)
+                {
+
+                    sendCommand(CommandFromServer.R_TURN);
                 }
             }
         }

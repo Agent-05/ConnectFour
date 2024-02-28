@@ -1,3 +1,5 @@
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -11,7 +13,7 @@ public class ClientMain
             GameData gameData = new GameData();
 
             // create a connection to server
-            Socket socket = new Socket("127.0.0.1",8025);
+            Socket socket = new Socket("T440014-2329L.oths.katyisd.org",8025);
             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
 
@@ -35,4 +37,5 @@ public class ClientMain
             e.printStackTrace();
         }
     }
+
 }

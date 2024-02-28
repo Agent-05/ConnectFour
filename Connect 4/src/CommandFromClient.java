@@ -10,6 +10,7 @@ public class CommandFromClient implements Serializable
     // Command list
     public static final int MOVE    =0;
     public static final int RESTART =1;
+    public static final int DISCONNECT = 2;
 
     public CommandFromClient(int command, String data) {
         this.command = command;
