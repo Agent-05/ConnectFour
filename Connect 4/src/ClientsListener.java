@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.ObjectInputStream;
@@ -53,6 +54,31 @@ public class ClientsListener implements Runnable
                 else if(cfs.getCommand() == CommandFromServer.B_WINS)
                 {
                     frame.setText("Blue wins!");
+                }
+                else if(cfs.getCommand() == CommandFromServer.RESET)
+                {
+                    frame.reset();
+                }
+                else if(cfs.getCommand() == CommandFromServer.DISCONNECT)
+                {
+                    frame.setText("Other Player Disconnected");
+                    Thread.sleep(3000);
+                    frame.setText("Ending Game...");
+                    Thread.sleep(3000);
+                    frame.setText("5");
+                    Thread.sleep(1000);
+                    frame.setText("4");
+                    Thread.sleep(1000);
+                    frame.setText("3");
+                    Thread.sleep(1000);
+                    frame.setText("2");
+                    Thread.sleep(1000);
+                    frame.setText("1");
+                    Thread.sleep(1000);
+                    frame.setText("Bye Bye");
+                    Thread.sleep(1000);
+                    System.exit(0);
+
                 }
             }
         }

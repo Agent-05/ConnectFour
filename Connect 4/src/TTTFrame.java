@@ -46,7 +46,8 @@ public class TTTFrame extends JFrame implements MouseListener {
             @Override
             public void windowClosing(WindowEvent e) {
                 try {
-                    os.writeObject(CommandFromClient.DISCONNECT);
+                    System.out.println("Hi");
+                    os.writeObject(new CommandFromClient(CommandFromClient.DISCONNECT, ""));
                 }
                 catch (Exception a){
                     a.printStackTrace();
@@ -78,6 +79,7 @@ public class TTTFrame extends JFrame implements MouseListener {
 
             }
         };
+        addWindowListener(wl);
     }
 
     public void paint(Graphics g)
@@ -152,37 +154,44 @@ public class TTTFrame extends JFrame implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        int placement = e.getX();
-        int column = -1;
-        int row = -1;
-        if (placement >= 40 && placement <= 105 ){
-            column = 0;
-            row = rower(gameData.getGrid(), column);
-        } else if (placement >= 115 && placement <= 180 ) {
-            column = 1;
-            row = rower(gameData.getGrid(), column);
-        } else if (placement >= 190 && placement <= 255 ) {
-            column = 2;
-            row = rower(gameData.getGrid(), column);
-        } else if (placement >= 265 && placement <= 330 ) {
-            column = 3;
-            row = rower(gameData.getGrid(), column);
-        } else if (placement >= 340 && placement <= 405 ) {
-            column = 4;
-            row = rower(gameData.getGrid(), column);
-        } else if (placement >= 415 && placement <= 480 ) {
-            column = 5;
-            row = rower(gameData.getGrid(), column);
-        } else if (placement >= 490 && placement <= 555 ) {
-            column = 6;
-            row = rower(gameData.getGrid(), column);
+        if(e.getButton() == 3)
+        {
+                reset();
+
         }
-        if (column != -1 && row != -1){
-            try {
-                os.writeObject(new CommandFromClient(CommandFromClient.MOVE, "" + column + row + player));
-                System.out.println("Work");
-            }catch (Exception a){
-                a.printStackTrace();
+        else {
+            int placement = e.getX();
+            int column = -1;
+            int row = -1;
+            if (placement >= 40 && placement <= 105) {
+                column = 0;
+                row = rower(gameData.getGrid(), column);
+            } else if (placement >= 115 && placement <= 180) {
+                column = 1;
+                row = rower(gameData.getGrid(), column);
+            } else if (placement >= 190 && placement <= 255) {
+                column = 2;
+                row = rower(gameData.getGrid(), column);
+            } else if (placement >= 265 && placement <= 330) {
+                column = 3;
+                row = rower(gameData.getGrid(), column);
+            } else if (placement >= 340 && placement <= 405) {
+                column = 4;
+                row = rower(gameData.getGrid(), column);
+            } else if (placement >= 415 && placement <= 480) {
+                column = 5;
+                row = rower(gameData.getGrid(), column);
+            } else if (placement >= 490 && placement <= 555) {
+                column = 6;
+                row = rower(gameData.getGrid(), column);
+            }
+            if (column != -1 && row != -1) {
+                try {
+                    os.writeObject(new CommandFromClient(CommandFromClient.MOVE, "" + column + row + player));
+                    System.out.println("Work");
+                } catch (Exception a) {
+                    a.printStackTrace();
+                }
             }
         }
     }
@@ -209,5 +218,16 @@ public class TTTFrame extends JFrame implements MouseListener {
             }
         }
         return -1;
+    }
+
+    public void reset(){
+        try{
+        gameData.reset();
+        os.writeObject(new CommandFromClient(CommandFromClient.RESTART, ""));
+        }
+                catch(Exception b)
+        {
+            b.printStackTrace();
+        }
     }
 }
