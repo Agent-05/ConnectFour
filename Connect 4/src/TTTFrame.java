@@ -162,7 +162,7 @@ public class TTTFrame extends JFrame implements MouseListener {
     public void mousePressed(MouseEvent e) {
         if(e.getButton() == 3)
         {
-            if(!localCheck)//did I already want to reset?
+            if(!localCheck && ((gameData.isWinner(gameData.getGrid(), 'B') || gameData.isWinner(gameData.getGrid(), 'R') || gameData.isCat()) || globalCheck))//did I already want to reset?
             {
                 reset();
                 localCheck = true;//now it shows I did already request
@@ -232,7 +232,12 @@ public class TTTFrame extends JFrame implements MouseListener {
     public void reset(){
         try{
             if(globalCheck)
+            {
                 os.writeObject(new CommandFromClient(CommandFromClient.RESTART, ""));//restart if someone already requested
+                globalCheck = false;
+                localCheck = false;
+            }
+
             else
                 os.writeObject(new CommandFromClient(CommandFromClient.RESTARTREQ, ""));//otherwise make sure that the request gets filed
         }
@@ -240,6 +245,10 @@ public class TTTFrame extends JFrame implements MouseListener {
         {
             b.printStackTrace();
         }
+    }
+
+    public void req(){
+        globalCheck = true;
     }
 
 }

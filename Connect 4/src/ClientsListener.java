@@ -59,6 +59,11 @@ public class ClientsListener implements Runnable
                 {
                     frame.reset();
                 }
+                else if(cfs.getCommand() == CommandFromServer.RESETREQ)
+                {
+                    frame.req();
+                    frame.setText("Other player wants to play again, but do you? (Press right mouse button)");
+                }
                 else if(cfs.getCommand() == CommandFromServer.DISCONNECT)
                 {
                     frame.setText("Other Player Disconnected");

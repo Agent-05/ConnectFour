@@ -58,9 +58,8 @@ public class ServersListener implements Runnable
                     gameData.reset();
                     sendCommand(new CommandFromServer(CommandFromServer.RESET, ""));
                     changeTurn();
-                }else if(cfc.getCommand()==CommandFromClient.RESTARTREQ && (gameData.isWinner(gameData.getGrid(), 'B') || gameData.isWinner(gameData.getGrid(), 'R') || gameData.isCat()))
+                }else if(cfc.getCommand()==CommandFromClient.RESTARTREQ)
                 {
-                    gameData.reset();
                     sendCommand(new CommandFromServer(CommandFromServer.RESETREQ, ""));
                 }
                 else if (cfc.getCommand() == CommandFromClient.DISCONNECT) {
