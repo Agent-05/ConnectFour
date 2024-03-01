@@ -53,19 +53,23 @@ public class ServersListener implements Runnable
                     // changes the turn and checks to see if the game is over
                     changeTurn();
                     checkGameOver();
-                }else if(cfc.getCommand()==CommandFromClient.RESTART && (gameData.isWinner(gameData.getGrid(), 'B') || gameData.isWinner(gameData.getGrid(), 'R') || gameData.isCat()))
+                }else if(cfc.getCommand()==CommandFromClient.RESTART)
                 {
                     gameData.reset();
                     sendCommand(new CommandFromServer(CommandFromServer.RESET, ""));
                     changeTurn();
-                } else if (cfc.getCommand() == CommandFromClient.DISCONNECT) {
-                    os.writeObject(new CommandFromServer(CommandFromServer.DISCONNECT, ""));
+                }else if(cfc.getCommand()==CommandFromClient.RESTARTREQ && (gameData.isWinner(gameData.getGrid(), 'B') || gameData.isWinner(gameData.getGrid(), 'R') || gameData.isCat()))
+                {
+                    gameData.reset();
+                    sendCommand(new CommandFromServer(CommandFromServer.RESETREQ, ""));
+                }
+                else if (cfc.getCommand() == CommandFromClient.DISCONNECT) {
+                    sendCommand(new CommandFromServer(CommandFromServer.DISCONNECT, ""));
                 }
             }
         }
         catch(Exception e)
         {
-            e.printStackTrace();
         }
     }
 

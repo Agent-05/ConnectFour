@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.io.ObjectOutputStream;
 
 public class TTTFrame extends JFrame implements MouseListener {
@@ -12,7 +13,9 @@ public class TTTFrame extends JFrame implements MouseListener {
     private GameData gameData = null;
     // output stream to the server
     ObjectOutputStream os;
-
+    BufferedImage buffer = new BufferedImage(600,800,BufferedImage.TYPE_4BYTE_ABGR);
+    public boolean localCheck = false;
+    public boolean globalCheck = false;
     public TTTFrame(GameData gameData, ObjectOutputStream os, char player)
     {
         super("Connect  4");
@@ -48,6 +51,7 @@ public class TTTFrame extends JFrame implements MouseListener {
                 try {
                     System.out.println("Hi");
                     os.writeObject(new CommandFromClient(CommandFromClient.DISCONNECT, ""));
+                    Thread.sleep(1000);
                 }
                 catch (Exception a){
                     a.printStackTrace();
@@ -82,45 +86,47 @@ public class TTTFrame extends JFrame implements MouseListener {
         addWindowListener(wl);
     }
 
-    public void paint(Graphics g)
+    public void paint(Graphics gg)
     {
         //7 by 6 grid (6 down 7 across) yellow background with white circles evenly spaced out
         // draws the backgroundG
-        Graphics2D g2 = (Graphics2D) g;
-        g.setColor(new Color(237, 202, 133));
-        g.fillRect(0,0,getWidth(),getHeight());
-        g.setColor(Color.BLACK);
+
+        Graphics2D g2 = (Graphics2D) buffer.getGraphics();
+        g2.setColor(new Color(237, 202, 133));
+        g2.fillRect(0,0,getWidth(),getHeight());
+        g2.setColor(Color.BLACK);
         g2.setStroke(new BasicStroke(4));
-        g.drawRect(20,80,getWidth()-40,getHeight()-100);
+        g2.drawRect(20,80,getWidth()-40,getHeight()-100);
 
         // draws the display text to the screen
-        g.setColor(Color.GRAY);
-        g.setFont(new Font("Times New Roman",Font.BOLD,30));
-        g.drawString(text,20,55);
+        g2.setColor(Color.GRAY);
+        g2.setFont(new Font("Times New Roman",Font.BOLD,30));
+        g2.drawString(text,20,55);
 
         // draws the circle grid lines to the screen
         int spacing = 75;
-        g.setColor(Color.WHITE);
+        g2.setColor(Color.WHITE);
 
         for(int y = 0;y < 6; y++)
         {
             for (int x = 0; x < 7; x++)
             {
                 if (gameData.getGrid()[y][x] == 'B'){
-                    g.setColor(new Color(91, 162, 217));
-                    g.fillOval(spacing * x + 40, spacing * y + 100, 65, 65);
+                    g2.setColor(new Color(91, 162, 217));
+                    g2.fillOval(spacing * x + 40, spacing * y + 100, 65, 65);
                 } else if (gameData.getGrid()[y][x] == 'R') {
-                    g.setColor(new Color(237, 45, 45));
-                    g.fillOval(spacing * x + 40, spacing * y + 100, 65, 65);
+                    g2.setColor(new Color(237, 45, 45));
+                    g2.fillOval(spacing * x + 40, spacing * y + 100, 65, 65);
                 } else {
-                    g.fillOval(spacing * x + 40, spacing * y + 100, 65, 65);
+                    g2.fillOval(spacing * x + 40, spacing * y + 100, 65, 65);
                 }
-                g.setColor(Color.BLACK);
+                g2.setColor(Color.BLACK);
 
-                g.drawOval(spacing * x + 40, spacing * y + 100, 65, 65);
-                g.setColor(Color.WHITE);
+                g2.drawOval(spacing * x + 40, spacing * y + 100, 65, 65);
+                g2.setColor(Color.WHITE);
             }
         }
+        gg.drawImage(buffer,0,0,null);
     }
 
     public void setText(String text) {
@@ -156,8 +162,11 @@ public class TTTFrame extends JFrame implements MouseListener {
     public void mousePressed(MouseEvent e) {
         if(e.getButton() == 3)
         {
+            if(!localCheck)//did I already want to reset?
+            {
                 reset();
-
+                localCheck = true;//now it shows I did already request
+            }
         }
         else {
             int placement = e.getX();
@@ -222,12 +231,15 @@ public class TTTFrame extends JFrame implements MouseListener {
 
     public void reset(){
         try{
-        gameData.reset();
-        os.writeObject(new CommandFromClient(CommandFromClient.RESTART, ""));
+            if(globalCheck)
+                os.writeObject(new CommandFromClient(CommandFromClient.RESTART, ""));//restart if someone already requested
+            else
+                os.writeObject(new CommandFromClient(CommandFromClient.RESTARTREQ, ""));//otherwise make sure that the request gets filed
         }
                 catch(Exception b)
         {
             b.printStackTrace();
         }
     }
+
 }
