@@ -57,12 +57,15 @@ public class ClientsListener implements Runnable
                 }
                 else if(cfs.getCommand() == CommandFromServer.RESET)
                 {
-                    frame.reset();
+                    frame.restart();
                 }
                 else if(cfs.getCommand() == CommandFromServer.RESETREQ)
                 {
                     frame.req();
-                    frame.setText("Other player wants to play again, but do you? (Press right mouse button)");
+                    if(!frame.getLocal())
+                    {
+                        frame.setText("Other player wants to play again, but do you? (Press right mouse button)");
+                    }
                 }
                 else if(cfs.getCommand() == CommandFromServer.DISCONNECT)
                 {

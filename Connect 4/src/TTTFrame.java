@@ -229,13 +229,21 @@ public class TTTFrame extends JFrame implements MouseListener {
         return -1;
     }
 
+    public boolean getLocal(){
+        return localCheck;
+    }
+
+    public void restart(){
+        gameData.reset();
+        globalCheck = false;
+        localCheck = false;
+    }
+
     public void reset(){
         try{
             if(globalCheck)
             {
                 os.writeObject(new CommandFromClient(CommandFromClient.RESTART, ""));//restart if someone already requested
-                globalCheck = false;
-                localCheck = false;
             }
 
             else
